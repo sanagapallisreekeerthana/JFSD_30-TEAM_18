@@ -1,0 +1,46 @@
+package com.example.demo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.example.demo.entity.Admin;
+import com.example.demo.repository.AdminRepository;
+
+import java.util.Optional;
+
+@Service
+public class AdminService {
+
+    @Autowired
+    private AdminRepository adminRepository;
+
+    // Register a new admin
+    public Admin registerAdmin(Admin admin) {
+        // Here, you can add some validation logic like checking if the username or email already exists
+        Optional<Admin> existingAdminByUsername = adminRepository.findByUsername(admin.getUsername());
+        if (existingAdminByUsername.isPresent()) {
+            throw new RuntimeException("Username already taken");
+        }
+        
+        Optional<Admin> existingAdminByEmail = adminRepository.findByEmail(admin.getEmail());
+        if (existingAdminByEmail.isPresent()) {
+            throw new RuntimeException("Email already taken");
+        }
+
+        return adminRepository.save(admin);
+    }
+
+    // Admin login
+    public Admin loginAdmin(String username, String password) {
+        Optional<Admin> adminOpt = adminRepository.findByUsername(username);
+        if (adminOpt.isEmpty()) {
+            throw new RuntimeException("Admin not found");
+        }
+
+        Admin admin = adminOpt.get();
+        if (!admin.getPassword().equals(password)) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        return admin;  // Return the logged-in admin
+    }
+}

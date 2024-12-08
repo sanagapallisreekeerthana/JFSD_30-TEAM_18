@@ -1,0 +1,9 @@
+package com.react_sb.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.react_sb.model.UserModel;
+
+public interface UserModelRepo extends JpaRepository<UserModel, Integer>{
+
+}

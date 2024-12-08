@@ -1,0 +1,62 @@
+package com.react_sb.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.react_sb.model.UserModel;
+import com.react_sb.repository.UserModelRepo;
+
+@Service
+public class UserServiceImpl implements UserService{
+	
+	@Autowired
+	private UserModelRepo userRepo;
+	
+	
+	@Override
+	public List<UserModel> getAllUsers() {
+		return userRepo.findAll();
+	}
+
+	@Override
+	public Boolean addUser(UserModel user) {
+		try {
+			userRepo.save(user);
+			System.out.println("User Added Successfully");
+			return true;
+		} catch (Exception e) {
+			System.err.println("Error adding user, "+e.getLocalizedMessage());
+			return false;
+		}
+	}
+
+	@Override
+	public Boolean updateUser(Integer id, UserModel user) {
+		try {
+			UserModel currUser=userRepo.getUserById(id);
+		    currUser.setPassword(user.getPassword());
+		    userRepo.save(currUser);
+		    return true;
+			
+		} catch (Exception e) {
+			System.err.println("Error updating user, "+e.getLocalizedMessage());
+			return false;
+		}
+	}
+
+	@Override
+	public Boolean deleteUser(Integer id) {
+		try {
+			UserModel currUser=userRepo.getUserById(id);
+		    userRepo.delete(currUser);
+		    return true;
+			
+		} catch (Exception e) {
+			System.err.println("Error deleting user, "+e.getLocalizedMessage());
+			return false;
+		}
+	}
+
+}

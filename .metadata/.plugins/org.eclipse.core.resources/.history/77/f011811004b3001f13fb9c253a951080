@@ -1,0 +1,24 @@
+package com.example.demo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.example.demo.entity.Admin;
+import com.example.demo.repository.AdminRepository;
+
+@Service
+public class AdminService {
+
+    @Autowired
+    private AdminRepository adminRepository;
+
+    // Register Admin
+    public Admin registerAdmin(Admin admin) {
+        // You may add validation logic here, like checking if the username or email already exists
+        return adminRepository.save(admin);  // Save the admin to the database
+    }
+
+    // Find Admin by Username
+    public Optional<Admin> findByUsername(String username) {
+        return adminRepository.findByUsername(username);
+    }
+}

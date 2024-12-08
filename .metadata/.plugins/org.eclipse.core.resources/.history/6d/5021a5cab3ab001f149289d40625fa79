@@ -1,0 +1,5 @@
+package com.react_sb.service;
+
+public class UserServiceImpl {
+
+}
